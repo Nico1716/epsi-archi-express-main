@@ -1,21 +1,21 @@
 import { Product } from "../../product/domain/product.entity";
 
 export default class Order {
-  id: number;
+  private id: number;
 
-  createdAt: Date;
+  private createdAt: Date;
 
-  total: number;
+  private total: number;
 
-  customer: number;
+  private customer: number;
 
-  products: Product[];
+  private products: Product[];
 
-  status: string;
+  private status: string;
 
-  paidAt: Date;
+  private paidAt: Date;
 
-  constructor(customerId: number, products: [Product]) {
+  constructor(customerId: number, products: Product[]) {
     if (!customerId) {
       throw new Error("customerId is required");
     }
@@ -60,14 +60,8 @@ export default class Order {
   }
 
   cancel(): void {
-    if (this.status === 'CANCELLED') {
-      throw new Error(`Order with ID ${this.id} is already cancelled.`);
-    }
-
-    if (!this.paidAt) {
-      throw new Error(`Order with ID ${this.id} cannot be cancelled because it has not been paid.`);
-    }
-
-    this.status = 'CANCELLED';
+    if (this.status !== "paid") {
+      throw new Error("You can't cancel an order that is not paid");
+    } 
   }
 }

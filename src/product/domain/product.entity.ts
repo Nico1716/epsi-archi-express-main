@@ -1,3 +1,7 @@
 export class Product {
-    price: number;
+  private id: number;
+
+  private name: string;
+
+  price: number;
 }

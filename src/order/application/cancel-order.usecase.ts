@@ -1,24 +1,24 @@
 import OrderRepository from "../infrastructure/order.repository";
-import Order from "../domain/order.entity";
+import OrderContainer from "../order.container";
 
-export class CancelOrderUseCase {
-  constructor(
-    private readonly orderRepository: OrderRepository
-  ) {}
+export default class CancelOrderUseCase {
+  private orderRepository: OrderRepository;
 
-  execute(orderId: string): void {
-    const orderIdNumber = Number(orderId);
-    if (isNaN(orderIdNumber)) {
-      throw new Error(`Invalid orderId: ${orderId}`);
-    }
+  constructor() {
+    this.orderRepository = OrderContainer.getOrderRepository();
+  }
 
-    const order: Order | null = this.orderRepository.findById(orderIdNumber);
+  cancelOrder(orderId: number) {
+    const order = this.orderRepository.findById(orderId);
+
     if (!order) {
-      throw new Error(`Order with ID ${orderId} not found.`);
+      throw new Error("Order not found");
     }
 
-    order.cancel(); // Appel de la logique métier dans l'entité
+    order.cancel();
 
-    this.orderRepository.update(order);
+    const orderUpdated = this.orderRepository.update(order);
+
+    return orderUpdated;
   }
 }

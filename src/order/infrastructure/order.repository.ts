@@ -1,6 +1,7 @@
 import Order from "../domain/order.entity";
+import OrderRepositoryInterface from "../domain/order.repository.interface";
 
-export default class OrderRepository {
+export default class OrderRepository implements OrderRepositoryInterface {
   private orders: Order[] = [];
 
   create(order: Order): Order {

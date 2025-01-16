@@ -1,22 +1,14 @@
 import Order from "../domain/order.entity";
-import OrderRepository from "../infrastructure/order.repository";
-import { OrderContainer } from "../order.container";
+import OrderRepositoryInterface from "../domain/order.repository.interface";
 
 export class PayOrderUseCase {
-  // je créé une propriété privée orderRepository de type OrderRepository
-  private orderRepository: OrderRepository;
+  private orderRepository: OrderRepositoryInterface;
 
-  // je créé un constructeur, qui est appelé automatiquement
-  // quand la classe PayOrderUseCase est instanciée
-  // mon constructeur ici récupère l'instance de OrderRepository
-  // depuis le container
-  // et la stocke dans la propriété orderRepository
-  constructor() {
-    this.orderRepository = OrderContainer.getOrderRepository();
+  constructor(orderRepository: OrderRepositoryInterface) {
+    this.orderRepository = orderRepository;
   }
 
   payOrder(orderId: number): Order {
-    // j'utilise la propriété orderRepository
     const order = this.orderRepository.findById(orderId);
 
     if (!order) {
