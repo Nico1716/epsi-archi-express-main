@@ -1,23 +1,11 @@
 import OrderRepository from "../infrastructure/order.repository";
 
-interface CancelOrderParams {
-  orderId: string;
-}
-
-interface Order {
-  id: string;
-  status: string;
-  paidAt: Date | null; 
-}
-
 export class CancelOrderUseCase {
   constructor(
     private readonly orderRepository: OrderRepository
   ) {}
 
-  async execute(params: CancelOrderParams): Promise<void> {
-    const { orderId } = params;
-
+  async execute(orderId: string): Promise<void> {
     const orderIdNumber = Number(orderId);
     if (isNaN(orderIdNumber)) {
       throw new Error(`Invalid orderId: ${orderId}`);
