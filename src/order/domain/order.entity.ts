@@ -58,4 +58,16 @@ export default class Order {
     this.status = "paid";
     this.paidAt = new Date();
   }
+
+  cancel(): void {
+    if (this.status === 'CANCELLED') {
+      throw new Error(`Order with ID ${this.id} is already cancelled.`);
+    }
+
+    if (!this.paidAt) {
+      throw new Error(`Order with ID ${this.id} cannot be cancelled because it has not been paid.`);
+    }
+
+    this.status = 'CANCELLED';
+  }
 }
