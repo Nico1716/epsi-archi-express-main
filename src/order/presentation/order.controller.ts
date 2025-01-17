@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { CreateOrderUseCase } from "../application/create-order.usecase";
+import { UpdateOrderUseCase } from "../application/add-products.usecase";
 import { PayOrderUseCase } from "../application/pay-order.usecase";
 import CancelOrderUseCase from "../application/cancel-order.usecase";
 import OrderContainer from "../order.container";
@@ -10,10 +10,10 @@ router.post("", (request, response) => {
   const customerId = request.body.customerId;
   const products = request.body.products;
 
-  const createOrderUseCase = new CreateOrderUseCase();
+  const createOrderUseCase = new UpdateOrderUseCase();
 
   try {
-    const order = createOrderUseCase.createOrder(customerId, products);
+    const order = createOrderUseCase.addProducts(customerId, products);
     response.status(201).json(order);
   } catch (error: any) {
     response.status(400).json({ error: error.message });

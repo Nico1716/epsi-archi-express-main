@@ -5,7 +5,7 @@ export default class Order {
 
   private createdAt: Date;
 
-  private total: number;
+  total: number;
 
   private customer: number;
 
@@ -15,12 +15,14 @@ export default class Order {
 
   private paidAt: Date;
 
+  private shippedAt: Date;
+
   constructor(customerId: number, products: Product[]) {
     if (!customerId) {
       throw new Error("customerId is required");
     }
 
-    if (products.length > 2) {
+    if (products.length > 4) {
       throw new Error("You can't add more than 2 products");
     }
 
@@ -60,8 +62,26 @@ export default class Order {
   }
 
   cancel(): void {
+    if (this.status === "canceled") {
+      throw new Error("Order already canceled "); 
+    }
     if (this.status !== "paid") {
       throw new Error("You can't cancel an order that is not paid");
     } 
+    this.status = "canceled";
+    this.paidAt = new Date();
+  }
+
+  addProducts(newProducts: Product[]): void {
+    const totalProducts = this.products.length + newProducts.length;
+  
+    if (totalProducts > 4) {
+      throw new Error("You can't add more than 4 products in total.");
+    }
+  
+    for (const product of newProducts) {
+      this.products.push(product);
+      this.total += product.price;
+    }
   }
 }

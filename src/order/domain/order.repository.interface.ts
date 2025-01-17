@@ -5,4 +5,5 @@ export default interface OrderRepositoryInterface {
   findById(orderId: number): Order;
   update(order: Order): Order;
   findAll(): Order[];
+  update(order: Order): Order;
 }
