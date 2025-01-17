@@ -36,4 +36,17 @@ export class Product {
   getId(): number {
     return this.id;
   }
+
+  update(title: string, price: number, description: string): void {
+    this.validateTitle(title);
+    this.validateDescription(description);
+
+    if (price <= 0) {
+      throw new Error("Product price must be greater than 0.");
+    }
+
+    this.title = title;
+    this.price = price;
+    this.description = description;
+  }
 }
