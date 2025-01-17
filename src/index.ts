@@ -4,7 +4,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-import productController from "./product/product.controller";
+import productController from "./product/presentation/product.controller";
 import orderController from "./order/presentation/order.controller";
 
 app.use("/api/products", productController);
