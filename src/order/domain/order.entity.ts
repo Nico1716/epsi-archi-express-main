@@ -61,6 +61,14 @@ export default class Order {
     this.paidAt = new Date();
   }
 
+  ship(): void {
+    if (this.status !== "paid") {
+      throw new Error("You can't ship an order that is not paid");
+    }
+    this.status = "shipped";
+    this.shippedAt = new Date();
+  }
+
   cancel(): void {
     if (this.status === "canceled") {
       throw new Error("Order already canceled "); 

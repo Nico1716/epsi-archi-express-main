@@ -3,6 +3,7 @@ const router = express.Router();
 
 import { UpdateOrderUseCase } from "../application/add-products.usecase";
 import { PayOrderUseCase } from "../application/pay-order.usecase";
+import { ShipOrderUseCase } from "../application/ship-order.usecase";
 import CancelOrderUseCase from "../application/cancel-order.usecase";
 import OrderContainer from "../order.container";
 
@@ -41,6 +42,20 @@ router.patch("/:orderId/cancel", (request, response) => {
 
   try {
     const order = cancelOrderUseCase.cancelOrder(orderId);
+    response.status(200).json(order);
+  } catch (error: any) {
+    response.status(400).json({ error: error.message });
+  }
+});
+
+router.patch("/:orderId/ship", (request, response) => {
+  const orderId = parseInt(request.params.orderId);
+
+  const orderRepository = OrderContainer.getOrderRepository();
+  const shipOrderUseCase = new ShipOrderUseCase(orderRepository);
+
+  try {
+    const order = shipOrderUseCase.shipOrder(orderId);
     response.status(200).json(order);
   } catch (error: any) {
     response.status(400).json({ error: error.message });
