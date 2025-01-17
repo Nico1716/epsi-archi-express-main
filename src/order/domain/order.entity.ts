@@ -97,4 +97,13 @@ export default class Order {
       this.total += product.price;
     }
   }
+
+  getStatus(): string {
+    return this.status;
+  }
+
+  getProducts(): Product[] {
+    return this.products;
+  }
+
 }

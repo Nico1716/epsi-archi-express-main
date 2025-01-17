@@ -11,4 +11,10 @@ export default class ProductRepository {
     findByTitle(title: string): Product | undefined {
         return this.products.find((product) => product.title === title);
     };
+
+    delete(product: Product): Product {
+        const index = this.products.indexOf(product);
+        this.products.splice(index, 1);
+        return product;
+    }
 }

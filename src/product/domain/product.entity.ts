@@ -32,4 +32,8 @@ export class Product {
       throw new Error("Product description must be between 10 and 100 characters.");
     }
   }
+  
+  getId(): number {
+    return this.id;
+  }
 }
