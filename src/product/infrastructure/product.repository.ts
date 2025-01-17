@@ -12,6 +12,10 @@ export default class ProductRepository {
         return this.products.find((product) => product.title === title);
     };
 
+    findById(id: number): Product | undefined {
+        return this.products.find((product) => product.getId() === id);
+    }
+
     findAll(): Product[] {
         return this.products;
     }

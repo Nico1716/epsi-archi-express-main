@@ -20,6 +20,10 @@ export default class OrderRepository implements OrderRepositoryInterface {
     return this.orders.find((order) => order.getId() === id);
   }
 
+  findCartByCustomer(customerId: number): Order | undefined {
+    return this.orders.find((order) => order.getCustomer() === customerId && order.getStatus() === "cart");
+  }
+
   update(order: Order): Order {
     this.orders = this.orders.map((orderInList) => {
       if (orderInList.getId() === order.getId()) {

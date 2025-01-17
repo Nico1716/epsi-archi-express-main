@@ -1,4 +1,5 @@
 import { Product } from "../../product/domain/product.entity";
+import ProductContainer from "../../product/product.container";
 import Order from "../domain/order.entity";
 import OrderRepository from "../infrastructure/order.repository";
 import OrderContainer from "../order.container";
@@ -10,21 +11,31 @@ export class UpdateOrderUseCase {
     this.orderRepository = OrderContainer.getOrderRepository();
   }
 
-  addProducts(customerId: number, products: [Product]): Order | { error: string } {
-    
+  addProducts(customerId: number, products: [productId: number]): Order | { error: string } {
 
-    try {
-      let order = this.orderRepository.findById(customerId);
-      if (!order) {
-        order = new Order(customerId, products);
-        this.orderRepository.create(order);
-      } else {
-        order.addProducts(products);
-        this.orderRepository.update(order);
+      // récupère une commande par l'id du client et par le status cart
+      const cartForCustomer = this.orderRepository.findCartByCustomer(customerId);
+
+      // récupère la liste de produits par leur id pour pouvoir les insérer
+      const productList = products.map(productId => {
+        const product = ProductContainer.getProductRepository().findById(productId);
+        if (!product) {
+          throw new Error(`Product with ID ${productId} not found.`);
+        }
+        return product;
+      });
+
+      if (!cartForCustomer) {
+
+        const order = new Order(customerId, productList);
+
+        return this.orderRepository.create(order);
+
       }
-      return order;
-    } catch (error: any) {
-      return { error: error.message };
-    }
+
+        cartForCustomer.addProducts(productList);
+
+        return this.orderRepository.update(cartForCustomer);
+
   }
 }
