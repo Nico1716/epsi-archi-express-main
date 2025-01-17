@@ -73,6 +73,11 @@ export default class Order {
   }
 
   addProducts(newProducts: Product[]): void {
+
+    if (this.status !== "cart") {
+      throw new Error("You can't update an order that is not in the cart");
+    } 
+
     const totalProducts = this.products.length + newProducts.length;
   
     if (totalProducts > 4) {
